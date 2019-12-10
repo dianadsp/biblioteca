@@ -1,0 +1,42 @@
+CLIENT.H:
+    comunicacion();
+    cargar_grafo();
+    leer_consulta(string);
+    escuchar();
+
+    inicializar();
+    crear_slaves();
+
+UTILS.H:
+    struct CInfo-->informacion del slave, su port e ip
+    struct CAddress--> almacena socket y direccion de socket
+    info_to_string(CInfo info)->retorna string de port e ip
+    void conectar_enviar(CInfo &slave, string mensaje,string tipo_consulta, int bits)
+    void configurar_esclavo(vector<string> &parse, CInfo &info, string &sql)--> asigno en info su port e ip del esclavo
+    vector<string> dividir_mensaje(string mensaje, string _separator)--> divido el mensaje en paquetes
+    int calcular_hash(string nodo, int modulo)
+
+PROTOCOL.H:
+    int tam_buffer;
+	int m_bit-->cantidad de bits que enviaré
+
+    vector<string> dividir_query(string);--> divide consulta en paquetes para enviar
+    void enviar(string, int, string);
+    string recibir(int);
+
+SLAVE.H:
+    int bits;
+    CInfo m_info; //port , ip
+    CAddress m_conexion; //CAdress contiene socket y struct de socket (utils.h)
+    CDatabase *m_db; //puntero a BD
+    void escuchar();-->escucha lo que envia el cliente
+    void inicializar();
+    CSlave(int, string, string);
+
+DATABASE.H:
+    sqlite3* m_sqlite;
+    string m_nombre;
+
+    bool execute(string); 
+    bool existeBD(const string& name)
+
